@@ -18,10 +18,11 @@ export default class OrderedDithering {
         
 
     static create(data, type, bits) {
-        let d = this.types[type].length ** 2;
+        let l = this.types[type].length;
+        let d = l ** 2;
 
         matrixForEach(data, (p, x, y) => {
-            let factor = this.types[type][y % 2][x % 2];
+            let factor = this.types[type][y % l][x % l];
 
             let bayer = 255 / bits * (factor / d - 0.5);
             for (let i = 0; i < 3; i++) {
