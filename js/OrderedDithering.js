@@ -1,4 +1,4 @@
-import { matrixForEach, quantization } from './tools.js';
+import { quantization } from './tools.js';
 
 
 export default class OrderedDithering {
@@ -27,11 +27,11 @@ export default class OrderedDithering {
     }
         
 
-    static create(data, type, bits) {
+    static create(matrix, type, bits) {
         let l = this.types[type].length;
         let d = l ** 2;
 
-        matrixForEach(data, (p, x, y) => {
+        matrix.forEach((p, x, y) => {
             let factor = this.types[type][y % l][x % l];
 
             let bayer = 255 / bits * (factor / d - 0.5);

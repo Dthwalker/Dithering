@@ -38,13 +38,20 @@ export default class UI {
 
         let slct = document.createElement('select');
         block.append(slct);
-        Object.keys(options).forEach(group => {
-            slct.innerHTML += `<optgroup label="${group}">`;
-            options[group].forEach((e, i) => {
+
+        if (Array.isArray(options)) {
+            options.forEach((e, i) => {
                 slct.innerHTML += `<option value="${e}" ${selected == e ? 'selected' : ''}>${e}</option>`
             });
-            slct.innerHTML += `</optgroup>`;
-        })
+        } else {
+            Object.keys(options).forEach(group => {
+                slct.innerHTML += `<optgroup label="${group}">`;
+                options[group].forEach((e, i) => {
+                    slct.innerHTML += `<option value="${e}" ${selected == e ? 'selected' : ''}>${e}</option>`
+                });
+                slct.innerHTML += `</optgroup>`;
+            })
+        }
 
         slct.onchange = callback;
         return block;

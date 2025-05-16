@@ -1,4 +1,4 @@
-import {matrixForEach, toGrayscale, quantization} from './tools.js';
+import {toGrayscale, quantization} from './tools.js';
 
 
 export default class DiffusionDithering {
@@ -77,19 +77,19 @@ export default class DiffusionDithering {
         ],
     }
 
-    static errorDiffusion(data, type, bits) {
+    static errorDiffusion(matrix, type, bits) {
         let diffusion = (color, error) => {
             let [r, g, b] = color;
             [color[0], color[1], color[2]] = [r, g, b].map(e => e + error);
         }
         
-        matrixForEach(data, (p, x, y) => {
+        matrix.forEach((p, x, y) => {
             let oP = [...p];
             let nP =  quantization(p, bits);
             [p[0], p[1], p[2]] = nP;
             let quantError = toGrayscale(oP) - toGrayscale(nP);
             this.types[type].forEach(e => {
-                try { diffusion(data[y + e[0]][x + e[1]], quantError * e[2] / e[3]) } catch {}
+                try { diffusion(matrix.data[y + e[0]][x + e[1]], quantError * e[2] / e[3]) } catch {}
             });
         });
     }
